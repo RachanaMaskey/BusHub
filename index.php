@@ -1,154 +1,173 @@
 <?php
+    
     session_start();
-    include("header.php");
-
-    $con=new connec();
-    $tbl="slider";
-    $result=$con->select_all($tbl);
-    $result1=$con->select_all($tbl);
-
-    if(empty($_SESSION["username"]))
+    $_SESSION["admin_username"]=null;
+    $error="";
+    
+    
+    if(isset($_POST["btn_login"]))
     {
-        ?>
-            <script>
-                $(document).ready(function(){
-                    $('#modelId1').modal('show');
-                });
-            </script>
-        <?php
-    }
+        $email_id=$_POST["log_email"];
+        $password_log=$_POST["log_psw"];
 
-?>
-
-<section style="min-height:450px;background-color:FFFC9B;">
-    <div id="carouselId" class="carousel slide" data-ride="carousel">
-        <?php
-            if($result->num_rows>0)
+        if("admin@gmail.com"==$email_id)
+        {
+            if("admin123"==$password_log)
             {
-                $i=0;
-                echo '<ol class="carousel-indicators">';
-                while($row=$result->fetch_assoc())
-                {
-                    if($i==0)
-                    {
-                        echo '<li data-target="#carouselId" data-slide-to="'.$i.'" class="active"></li>';
-                    }
-                    else
-                    {
-                        echo '<li data-target="#carouselId" data-slide-to="'.$i.'"></li>';
-                    }
-                    $i++;
-                }
-                echo '</ol>';
+                $_SESSION["admin_username"]=$email_id;
+                header("Location:viewbooking.php");
             }
-        ?>
-        <!-- <ol class="carousel-indicators">
-            <li data-target="#carouselId" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselId" data-slide-to="1"></li>
-            <li data-target="#carouselId" data-slide-to="2"></li>
-        </ol> -->
-        <div class="carousel-inner" role="listbox">
-            <?php
-                if($result1->num_rows>0)
-                {
-                    $j=0;
-                    while($row=$result1->fetch_assoc())
-                    {
-                        if($j==0)
-                        {
-                           ?>
-                           <div class="carousel-item active">
-                                <img src="<?php echo $row["img_path"];?>" alt="<?php echo $row["alt"];?>" style="width:100%;height:500px;">
-                            </div>
-                           <?php
-                        }
-                        else
-                        {
-                           ?>
-                           <div class="carousel-item">
-                                <img src="<?php echo $row["img_path"];?>" alt="<?php echo $row["alt"];?>" style="width:100%;height:500px;">
-                            </div>
-                           <?php
-                        }
-                        $j++;   
-                    }
-                }
-            ?>
-            <!-- <div class="carousel-item active">
-                <img src="images/first.jpg" alt="First slide" style="width:100%;height:500px;">
-            </div>
-            <div class="carousel-item">
-                <img src="images/second.jpg" alt="Second slide" style="width:100%;height:500px;">
-            </div>
-            <div class="carousel-item">
-                <img src="images/third.jpg" alt="Third slide" style="width:100%;height:500px;">
-            </div> -->
-        </div>
-        <a class="carousel-control-prev" href="#carouselId" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselId" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-
-    <!-- our destinations -->
-    <h2 class="mt-5 pt-4 md-4 text-center fw-bold h-font" style="color:#064663">Our Destinations</h2>
-    <hr>
-    <div class="container">
-        <div class="row">
-                <div class="card border-0 shadow" style="max-width: 390px; margin: auto;">
-                    <img src="images/places/bandipur.jpg" class="card-img-top" >
-                    <div class="card-body">
-                        <h5 style="color:#064663;">Bandipur</h5>
-                    </div>
-                </div>
-                <div class="card border-0 shadow" style="max-width: 350px; margin: auto;">
-                    <img src="images/places/chitwan.jpg" class="card-img-top" >
-                    <div class="card-body">
-                        <h5 style="color:#064663;">Chitwan</h5>
-                    </div>
-                </div>
-                <div class="card border-0 shadow" style="max-width: 350px; margin: auto;">
-                    <img src="images/places/lumbini.jpg" class="card-img-top" >
-                    <div class="card-body">
-                        <h5 style="color:#064663;">Lumbini</h5>
-                    </div>
-                </div>
-            <div class="col-lg-12 text-center mt-5" style="border-radius:60px;background-color:#064663;color:white;">
-                <a href="route.php" class="btn" style="color:white;">Show more details</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- facilities -->
-    <h2 class="mt-5 pt-4 md-4 text-center fw-bold h-font" style="color:#064663">Our Facilities</h2>
-    <hr>
-    <div class="container">
-        <div class="row justify-content-evenly px-lg-0 px-md-0 px-5">
-            <div class="col-lg-3 col-md-3 text-center bg-white rounded shadow py-4 my-3">
-                <img src="images/features/1.png" width="80px">
-                <h5 class="mt-3">WiFi</h5>
-            </div>
-            <div class="col-lg-3 col-md-3 text-center bg-white rounded shadow py-4 my-3">
-                <img src="images/features/2.jpg" width="80px">
-                <h5 class="mt-3">Television</h5>
-            </div>
-            <div class="col-lg-3 col-md-3 text-center bg-white rounded shadow py-4 my-3">
-                <img src="images/features/3.jpg" width="80px">
-                <h5 class="mt-3">AC</h5>
-            </div>
-            <div class="col-lg-3 col-md-3 text-center bg-white rounded shadow py-4 my-3">
-                <img src="images/features/4.png" width="80px">
-                <h5 class="mt-3">Comfartable Seats</h5>
-            </div>
-        </div>
-    </div>
-
-</section>
-
-<?php
-include("footer.php");
+            else
+            {
+                $error="Invalid Password";
+            }
+               
+        }
+        else
+        {
+            $error="Invalid Email";
+        }
+        
+    }
 ?>
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Admin Panel</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+           * 
+           {
+            box-sizing: border-box;
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+           }
+
+            /* Add padding to containers */
+            .container 
+            {
+            padding: 16px;
+            }
+           
+            /* Full-width input fields */
+            textarea,input[type=text],  input[type=password],input[type=tel],input[type=number],input[type=date]
+            {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            display: inline-block;
+            border: none;
+            background: #f1f1f1;
+            background-color:#ddd;
+            }
+
+            textarea,input[type=text]:focus, input[type=password]:focus 
+            {
+            background-color:#ddd;
+            outline: none;
+            }
+
+            /* Overwrite default styles of hr */
+            hr 
+            {
+            border: 1px solid #f1f1f1;
+            margin-bottom: 25px;
+            }
+
+            /*Set a style for the register button*/
+            #registerbtn
+            {
+                /* background-color:white; */
+                color:white;
+                padding: 16px 20px ;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                opacity: 0.9;
+            }
+            #registerbtn:hover
+            {
+                opacity: 1;
+            }
+            /*Set a style for the login button*/
+            #loginbtn
+            {
+                /* background-color:white; */
+                color:white;
+                padding: 16px 20px ;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                opacity: 0.9;
+            }
+            #loginbtn:hover
+            {
+                opacity: 1;
+            }
+            /*Add blue text color to links*/
+            a
+            {
+                color: blue;
+            }
+
+            .signin
+            {
+                background-color:#f1f1f1;
+                text-align: center;
+
+            }
+        </style>
+</head>
+  <body>
+    
+    <!-- admin login   -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6" style="margin:auto;">
+                <form method="post" >
+                    <div class="container card border-0 shadow" style="color:#064663;">
+                        <center style="color:#064663;">
+                            <h1>Admin Login</h1>
+                        </center>
+                        <hr>
+                        <label for="email"><b>Email</b></label>
+                        <input type="text" style="border-radius:50px;" placeholder="Enter Email" name="log_email" id="email" required>
+                        <label for="psw"><b>Password</b></label>
+                        <input type="password" style="border-radius:50px;" placeholder="Enter password" name="log_psw" id="psw" required>
+                        <center>
+                            <button type="submit" class="btn" name="btn_login" style="background-color:#064663;color:white;">Login</button>
+                        </center>
+                    </div>
+                </form>
+                <div class="container mt-5" style="width=50%;">
+                    <div class="row card border-0 shadow" style="color:#064663;width=50%;">
+                        <div class="col-md-6" style="margin:auto;">
+                            <p style="color:#064663;text-align:center;"><?php echo $error; ?></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
